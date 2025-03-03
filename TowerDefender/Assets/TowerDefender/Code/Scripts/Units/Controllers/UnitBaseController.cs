@@ -5,20 +5,21 @@ namespace TowerDefender.Units
 {
     public abstract class UnitBaseController : Utils.IGenericPoolable, Utils.ITarget
     {
-        private Utils.ITarget _currentTarget;
-        public Utils.ITarget CurrentTarget => _currentTarget;
+        protected Utils.ITarget CurrentTarget;
+        public Utils.ITarget GetCurrentTarget() => CurrentTarget;
 
         public Action<int> OnHit { get; set; }
         public Action OnDeath { get; set; }
 
-        private readonly UnitBaseModel _model;
-        private readonly UnitBaseView _view;
+        protected readonly UnitBaseModel Model;
+        protected readonly UnitBaseView View;
+        
         private readonly BaseUnitSystem[] _systems;
 
         public UnitBaseController(UnitBaseModel model)
         {
-            _model = model;
-            _view = GameObject.Instantiate(model.UnitViewPrefab).GetComponent<UnitBaseView>();
+            Model = model;
+            View = GameObject.Instantiate(model.UnitViewPrefab).GetComponent<UnitBaseView>();
 
             int modulesLength = model.Modules.Length;
             _systems = new BaseUnitSystem[modulesLength];
@@ -27,42 +28,46 @@ namespace TowerDefender.Units
                 _systems[i] = model.Modules[i].CreateSystem(this);
             }
 
-            OnDeath += () => OnShouldReturnToPool?.Invoke(this);
+            OnDeath += OnUnitDied;
         }
 
         public virtual void ManualUpdate()
         {
-            // We need to make sure we have a target for the systems to run
-            if (CurrentTarget == null)
-            {
-                if (TryFindNewTarget() == false)
-                    return;
-            }
-
             foreach (var system in _systems)
             {
                 system.UpdateSystem();
             }
         }
 
-        public virtual void OnManualDestroy()
+        public virtual void ManualDestroy()
         {
-            _model.FriendlyTargetsCollection.RemoveUnit(this);
+            Model.FriendlyTargetsCollection.RemoveUnit(this);
         }
 
         public void SetPosition(Vector3 newPosition)
         {
-            _view.Transform.position = newPosition;
+            View.Transform.position = newPosition;
         }
 
-        private bool TryFindNewTarget()
+        /// <summary>
+        /// Called when the current target for this unit has died
+        /// </summary>
+        protected void OnCurrentTargetDied()
         {
-            return _model.EnemyTargetsCollection.FindClosestTarget(Position, _model.TargetSearchDistance, out _currentTarget);
+            CurrentTarget = null;
+        }
+
+        /// <summary>
+        /// Called when this specific unit has died
+        /// </summary>
+        protected virtual void OnUnitDied()
+        {
+            OnShouldReturnToPool?.Invoke(this);
         }
 
 
         #region ITarget
-        public Vector3 Position => _view.Transform.position;
+        public virtual Vector3 Position => View.Transform.position;
 
         public float CalculateSqDistance(Vector3 from)
         {
@@ -86,21 +91,21 @@ namespace TowerDefender.Units
                 system.ResetSystem();
             }
 
-            _model.FriendlyTargetsCollection.AddUnit(this);
+            Model.FriendlyTargetsCollection.AddUnit(this);
 
-            _view.gameObject.SetActive(true);
+            View.gameObject.SetActive(true);
         }
 
         public void Disable()
         {
-            _model.FriendlyTargetsCollection.RemoveUnit(this);
+            Model.FriendlyTargetsCollection.RemoveUnit(this);
 
-            _view.gameObject.SetActive(false);
+            View.gameObject.SetActive(false);
         }
 
         public void Destroy()
         {
-            GameObject.Destroy(_view.gameObject);
+            GameObject.Destroy(View.gameObject);
         }
         #endregion IGenericPoolable
     }

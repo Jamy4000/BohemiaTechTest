@@ -1,6 +1,6 @@
 namespace TowerDefender.Units
 {
-    public class EnemyGruntController : UnitBaseController
+    public class EnemyGruntController : EnemyBaseController
     {
         public EnemyGruntController(EnemyGruntModel model) : base(model)
         {

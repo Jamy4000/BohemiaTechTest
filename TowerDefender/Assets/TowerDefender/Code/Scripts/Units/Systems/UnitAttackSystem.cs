@@ -1,5 +1,3 @@
-using System;
-
 namespace TowerDefender.Units
 {
     public class UnitAttackSystem : BaseUnitSystem<UnitAttackModule, UnitBaseController>
@@ -16,7 +14,7 @@ namespace TowerDefender.Units
             {
                 _attackTimer += UnityEngine.Time.deltaTime;
             }
-            else if (Owner.CurrentTarget.CalculateSqDistance(Owner.Position) < Model.AttackRange)
+            else if (Owner.GetCurrentTarget().CalculateSqDistance(Owner.Position) < Model.AttackRangeSq)
             {
                 Attack();
             }
@@ -25,7 +23,7 @@ namespace TowerDefender.Units
         private void Attack()
         {
             _attackTimer = 0f;
-            Owner.CurrentTarget.TakeDamage(Model.AttackDamage);
+            Owner.GetCurrentTarget().TakeDamage(Model.AttackDamage);
         }
 
         public override void ResetSystem()

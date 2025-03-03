@@ -6,15 +6,21 @@ namespace TowerDefender.Units
 {
     public sealed class PlayerUnitSpawner : BaseUnitSpawner
     {
+        [SerializeField] private PlayerCastleModel _castleModel;
+             
         [SerializeField] private InputActionReference _openFactoryMenuAction;
         [SerializeField] private InputActionReference _mousePositionAction;
         [SerializeField] private InputActionReference _placeUnitAction;
 
         private UnitType _currentlySelectedUnit = UnitType.PlayerArcherTower;
 
+        private UnitBaseController _playerCastleController;
+
         protected override void Awake()
         {
             base.Awake();
+
+            _playerCastleController = _castleModel.CreateController();
 
             _placeUnitAction.action.performed += OnPlaceUnit;
         }

@@ -6,7 +6,10 @@ namespace TowerDefender.Units
     public sealed class UnitMovementModule : BaseUnitModule
     {
         [field: SerializeField]
-        public float MoveSpeed { get; private set; }
+        public float MoveSpeed { get; private set; } = 1f;
+
+        [field: SerializeField]
+        public float DistanceFromEnemy { get; private set; } = 1f;
 
         public override BaseUnitSystem CreateSystem(UnitBaseController owner)
         {
