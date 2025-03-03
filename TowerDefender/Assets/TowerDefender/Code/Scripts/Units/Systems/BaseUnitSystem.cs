@@ -1,25 +1,19 @@
 namespace TowerDefender.Units
 {
-    public enum UnitSystemType
-    {
-        Attack,
-        Movement,
-        Health
-    }
-
     public abstract class BaseUnitSystem
     {
         public abstract void UpdateSystem();
         public abstract void ResetSystem();
     }
 
-    public abstract class BaseUnitSystem<TModule> : BaseUnitSystem
-        where TModule : BaseUnitModule
+    public abstract class BaseUnitSystem<TModel, TOwner> : BaseUnitSystem
+        where TModel : BaseUnitModule
+        where TOwner : UnitBaseController
     {
-        protected readonly TModule Model;
-        protected readonly UnitBase Owner;
+        protected readonly TModel Model;
+        protected readonly TOwner Owner;
 
-        public BaseUnitSystem(UnitBase owner, TModule model) 
+        public BaseUnitSystem(TOwner owner, TModel model) 
         {
             Owner = owner;
             Model = model;

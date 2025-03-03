@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace TowerDefender.Units
 {
-    public class UnitMovementSystem : BaseUnitSystem<UnitMovementModule>
+    public class UnitMovementSystem : BaseUnitSystem<UnitMovementModule, UnitBaseController>
     {
-        public UnitMovementSystem(UnitBase owner, UnitMovementModule model) : base(owner, model)
+        public UnitMovementSystem(UnitBaseController owner, UnitMovementModule model) : base(owner, model)
         {
         }
 
@@ -19,7 +19,7 @@ namespace TowerDefender.Units
 
         protected virtual void Move(Vector3 target)
         {
-            Owner.Transform.position = Vector3.MoveTowards(Owner.Transform.position, target, Model.MoveSpeed * Time.deltaTime);
+            Owner.SetPosition(Vector3.MoveTowards(Owner.Position, target, Model.MoveSpeed * Time.deltaTime));
         }
     }
 }

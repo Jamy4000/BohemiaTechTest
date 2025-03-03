@@ -2,11 +2,11 @@ using System;
 
 namespace TowerDefender.Units
 {
-    public class UnitAttackSystem : BaseUnitSystem<UnitAttackModule>
+    public class UnitAttackSystem : BaseUnitSystem<UnitAttackModule, UnitBaseController>
     {
         private float _attackTimer;
 
-        public UnitAttackSystem(UnitBase owner, UnitAttackModule model) : base(owner, model)
+        public UnitAttackSystem(UnitBaseController owner, UnitAttackModule model) : base(owner, model)
         { 
         }
 

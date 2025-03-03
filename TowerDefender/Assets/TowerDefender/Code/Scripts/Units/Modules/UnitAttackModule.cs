@@ -15,9 +15,7 @@ namespace TowerDefender.Units
         [field: SerializeField]
         public float AttackCooldown { get; private set; } = 3f;
 
-        public override UnitSystemType SystemType => UnitSystemType.Attack;
-
-        public override BaseUnitSystem CreateSystem(UnitBase owner)
+        public override BaseUnitSystem CreateSystem(UnitBaseController owner)
         {
             return new UnitAttackSystem(owner, this);
         }

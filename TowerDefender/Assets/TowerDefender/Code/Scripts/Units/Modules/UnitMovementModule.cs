@@ -8,9 +8,7 @@ namespace TowerDefender.Units
         [field: SerializeField]
         public float MoveSpeed { get; private set; }
 
-        public override UnitSystemType SystemType => UnitSystemType.Movement;
-
-        public override BaseUnitSystem CreateSystem(UnitBase owner)
+        public override BaseUnitSystem CreateSystem(UnitBaseController owner)
         {
             return new UnitMovementSystem(owner, this);
         }

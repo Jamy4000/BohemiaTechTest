@@ -1,11 +1,11 @@
 namespace TowerDefender.Units
 {
-    public class UnitHealthSystem : BaseUnitSystem<UnitHealthModule>
+    public class UnitHealthSystem : BaseUnitSystem<UnitHealthModule, UnitBaseController>
     {
         public int CurrentHealth { get; private set; }
         public bool IsDead => CurrentHealth <= 0f;
 
-        public UnitHealthSystem(UnitBase owner, UnitHealthModule model) : base(owner, model)
+        public UnitHealthSystem(UnitBaseController owner, UnitHealthModule model) : base(owner, model)
         {
             Owner.OnHit += DamageUnit;
         }
