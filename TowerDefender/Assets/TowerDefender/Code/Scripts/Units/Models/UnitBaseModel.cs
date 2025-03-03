@@ -17,6 +17,11 @@ namespace TowerDefender.Units
 
         FRIENDLY_START = 3000,
 
+        PlayerArcherTower       = 3001,
+        PlayerFlamethrowerTower = 3002,
+        PlayerKnight            = 3003,
+        PlayerCastle            = 3004,
+
         FRIENDLY_END = 5999,
     }
 

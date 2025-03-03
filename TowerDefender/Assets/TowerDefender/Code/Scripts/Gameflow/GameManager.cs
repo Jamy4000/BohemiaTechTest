@@ -14,9 +14,6 @@ namespace TowerDefender.Gameflow
         private void Start()
         {
             InitializeFsm();
-
-            // TODO not sure about that
-            DontDestroyOnLoad(gameObject);
         }
 
         private void LateUpdate()
