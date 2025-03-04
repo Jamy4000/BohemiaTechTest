@@ -7,23 +7,24 @@ namespace TowerDefender.Units
 
         public UnitHealthSystem(UnitBaseController owner, UnitHealthModule model) : base(owner, model)
         {
-            Owner.OnHit += DamageUnit;
         }
 
-        ~UnitHealthSystem()
+        public override void OnEnable()
         {
-            Owner.OnHit -= DamageUnit;
+            CurrentHealth = Model.MaxHealth;
+            Owner.OnHit += DamageUnit;
         }
 
         public override void UpdateSystem() { }
 
-        public override void ResetSystem()
+        public override void OnDisable()
         {
-            CurrentHealth = Model.MaxHealth;
+            Owner.OnHit -= DamageUnit;
         }
 
         public override void Dispose()
         {
+            Owner.OnHit -= DamageUnit;
         }
 
         private void DamageUnit(int damage)

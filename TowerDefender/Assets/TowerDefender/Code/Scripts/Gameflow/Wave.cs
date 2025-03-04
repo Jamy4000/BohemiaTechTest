@@ -19,5 +19,8 @@ namespace TowerDefender
 
         [field: SerializeField]
         public WaveUnitData[] UnitsToSpawn { get; private set; }
+
+        [field: SerializeField]
+        public int Reward { get; private set; } = 400;
     }
 }

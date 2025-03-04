@@ -9,4 +9,14 @@ namespace TowerDefender
             Wave = wave;
         }
     }
+
+    public readonly struct WaveEndedEvent
+    {
+        public readonly Wave Wave;
+
+        public WaveEndedEvent(Wave wave)
+        {
+            Wave = wave;
+        }
+    }
 }

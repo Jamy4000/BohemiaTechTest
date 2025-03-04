@@ -5,7 +5,12 @@ namespace TowerDefender.Units
         private float _attackTimer;
 
         public UnitAttackSystem(UnitBaseController owner, UnitAttackModule model) : base(owner, model)
-        { 
+        {
+        }
+
+        public override void OnEnable()
+        {
+            _attackTimer = 0f;
         }
 
         public override void UpdateSystem()
@@ -20,6 +25,10 @@ namespace TowerDefender.Units
             }
         }
 
+        public override void OnDisable()
+        {
+        }
+
         public override void Dispose()
         {
         }
@@ -28,11 +37,6 @@ namespace TowerDefender.Units
         {
             _attackTimer = 0f;
             Owner.CurrentTarget.TakeDamage(Model.AttackDamage);
-        }
-
-        public override void ResetSystem()
-        {
-            _attackTimer = 0f;
         }
     }
 }

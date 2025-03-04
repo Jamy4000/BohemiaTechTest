@@ -107,7 +107,7 @@ namespace TowerDefender.Units
         {
             foreach (var system in _systems)
             {
-                system.ResetSystem();
+                system.OnEnable();
             }
 
             Model.FriendlyTargetsCollection.AddUnit(this);
@@ -117,6 +117,11 @@ namespace TowerDefender.Units
 
         public void Disable()
         {
+            foreach (var system in _systems)
+            {
+                system.OnDisable();
+            }
+
             Model.FriendlyTargetsCollection.RemoveUnit(this);
 
             View.gameObject.SetActive(false);

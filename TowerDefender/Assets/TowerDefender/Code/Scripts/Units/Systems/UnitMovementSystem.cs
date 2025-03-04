@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,16 +11,22 @@ namespace TowerDefender.Units
         public UnitMovementSystem(UnitBaseController owner, UnitMovementModule model) : base(owner, model)
         {
             _agent = Owner.View.GetComponent<NavMeshAgent>();
-            
+        }
+
+        public override void OnEnable()
+        {
             Owner.OnTargetChanged += OnTargetChanged;
         }
 
         public override void UpdateSystem() 
         {
+            if (this.Owner is EnemyGruntController && _agent.velocity == Vector3.zero)
+                Debug.Log("Why");
         }
 
-        public override void ResetSystem()
+        public override void OnDisable()
         {
+            Owner.OnTargetChanged -= OnTargetChanged;
         }
 
         public override void Dispose()
@@ -32,19 +39,26 @@ namespace TowerDefender.Units
             if (target == null)
             {
                 // Quick fix for an error showing up in enditor that I don't think I'll be able to fix in time
-                if (_agent.isOnNavMesh)
-                    _agent.isStopped = true;
+                if (!_agent.isOnNavMesh && NavMesh.SamplePosition(Owner.Position, out NavMeshHit firstHit, 10f, -1))
+                {
+                    Owner.SetPosition(firstHit.position);
+                }
+
+                _agent.isStopped = true;
                 return;
             }
 
             Vector3 targetPosition = target.Position;
             Vector3 direction = Vector3.Normalize(targetPosition - Owner.Position);
             targetPosition -= direction * Model.DistanceFromEnemy;
-            _agent.destination = targetPosition;
-            // Quick fix for an error showing up in enditor that I don't think I'll be able to fix in time
-            if (_agent.isOnNavMesh)
-                _agent.isStopped = false;
-        }
 
+            // Quick fix for an error showing up in enditor that I don't think I'll be able to fix in time
+            if (!_agent.isOnNavMesh && NavMesh.SamplePosition(Owner.Position, out NavMeshHit hit, 10f, -1))
+            {
+                Owner.SetPosition(hit.position);
+            }
+            _agent.SetDestination(targetPosition);
+            _agent.isStopped = false;
+        }
     }
 }

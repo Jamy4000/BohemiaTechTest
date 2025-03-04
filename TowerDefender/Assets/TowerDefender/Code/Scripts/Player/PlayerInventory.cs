@@ -7,18 +7,9 @@ namespace TowerDefender.Player
     public sealed class PlayerInventory : ScriptableObject
     {
         [field: SerializeField] public int StartingGold { get; private set; } = 200;
-        public int CurrentGold { get; private set; }
+        public int CurrentGold { get; private set; } = 0;
+
         public Action<int> OnMoneyChanged;
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
-        private void OnValidate()
-        {
-            Initialize();
-        }
 
         public void Earn(int goldAmount)
         {
@@ -36,12 +27,5 @@ namespace TowerDefender.Player
             CurrentGold -= goldAmount;
             OnMoneyChanged?.Invoke(CurrentGold);
         }
-
-        private void Initialize()
-        {
-            CurrentGold = StartingGold;
-            OnMoneyChanged?.Invoke(CurrentGold);
-        }
     }
-
 }

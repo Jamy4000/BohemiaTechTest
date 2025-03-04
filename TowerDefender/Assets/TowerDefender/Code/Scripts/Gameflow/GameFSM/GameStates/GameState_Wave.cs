@@ -1,3 +1,4 @@
+using TowerDefender.Player;
 using Utils;
 
 namespace TowerDefender.Gameflow
@@ -39,6 +40,8 @@ namespace TowerDefender.Gameflow
 
         private void OnAllEnemiesDestroyed()
         {
+            MessagingSystem<WaveEndedEvent>.Publish(new WaveEndedEvent(Data.Waves[_currentWaveIndex]));
+            
             if (_currentWaveIndex == Data.Waves.Length - 1)
             {
                 RequestEnterState.Invoke(GameStateEnum.PlayerWon);

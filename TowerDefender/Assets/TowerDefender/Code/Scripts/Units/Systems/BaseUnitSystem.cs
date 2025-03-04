@@ -2,8 +2,9 @@ namespace TowerDefender.Units
 {
     public abstract class BaseUnitSystem : System.IDisposable
     {
+        public abstract void OnEnable();
         public abstract void UpdateSystem();
-        public abstract void ResetSystem();
+        public abstract void OnDisable();
 
         public abstract void Dispose();
     }
@@ -19,7 +20,6 @@ namespace TowerDefender.Units
         {
             Owner = owner;
             Model = model;
-            ResetSystem();
         }
     }
 }
