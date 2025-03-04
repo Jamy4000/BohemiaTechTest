@@ -13,6 +13,8 @@ namespace TowerDefender.Units
         public int ActiveUnitCount => _units.Count;
         public UnitBaseController GetUnit(int unitIndex) => _units[unitIndex];
 
+        public System.Action OnAllUnitDestroyed;
+
         public void AddUnit(UnitBaseController unit)
         {
             if (_units.Contains(unit))
@@ -39,6 +41,11 @@ namespace TowerDefender.Units
                 _units.Remove(unit);
             }
             _unitsToRemove.Clear();
+
+            if (_units.Count == 0)
+            {
+                OnAllUnitDestroyed?.Invoke();
+            }
 
             // TODO Rebuild KDTree
         }

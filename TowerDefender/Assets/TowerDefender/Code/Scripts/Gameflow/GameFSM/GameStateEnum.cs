@@ -4,10 +4,10 @@ namespace TowerDefender.Gameflow
     {
         None            = -1,
         MainMenu        = 0,
-        BeforeWave      = 1,
-        DuringWave      = 2,
+        Preparation     = 1,
+        Wave            = 2,
         Pause           = 3,
         GameOver        = 4,
-        GameWon         = 5
+        PlayerWon         = 5
     }
 }

@@ -7,13 +7,18 @@ namespace TowerDefender.Gameflow
     public sealed class GameManager : MonoBehaviour
     {
         [SerializeField] private GameStateData[] _gameStateData;
-        [SerializeField] private GameStateEnum _defaultState = GameStateEnum.BeforeWave;
+        [SerializeField] private GameStateEnum _defaultState = GameStateEnum.Preparation;
 
         private GameFSM _fsm;
 
         private void Start()
         {
             InitializeFsm();
+        }
+
+        private void Update()
+        {
+            _fsm.ManualUpdate();
         }
 
         private void LateUpdate()

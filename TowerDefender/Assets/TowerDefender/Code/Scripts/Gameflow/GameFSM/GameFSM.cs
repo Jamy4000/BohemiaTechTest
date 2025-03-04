@@ -9,5 +9,14 @@ namespace TowerDefender.Gameflow
         public GameFSM(GameState defaultState, System.Collections.Generic.List<GameState> states) : base(defaultState, states)
         {
         }
+
+        protected override void StartNewState(GameState newState)
+        {
+            GameStateEnum oldState = ActiveState == null ? GameStateEnum.None : ActiveState.StateEnum;
+
+            base.StartNewState(newState);
+
+            Utils.MessagingSystem<GameStateChangedEvent>.Publish(new (oldState, ActiveState.StateEnum));
+        }
     }
 }

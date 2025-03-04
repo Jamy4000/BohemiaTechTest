@@ -19,6 +19,8 @@ namespace TowerDefender.Gameflow
 
         public abstract void StartState();
 
+        public abstract void UpdateState();
+
         public abstract void EndState();
 
         public abstract bool HasPossibleTransitionsTo(GameStateEnum stateEnum);

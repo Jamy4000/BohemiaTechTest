@@ -10,6 +10,7 @@ namespace Utils
         bool CanBeEntered();
 
         void StartState();
+        void UpdateState();
         void EndState();
     }
 

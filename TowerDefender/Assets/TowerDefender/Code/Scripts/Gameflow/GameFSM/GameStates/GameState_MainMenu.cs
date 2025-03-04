@@ -1,15 +1,17 @@
+using Utils;
+
 namespace TowerDefender.Gameflow
 {
     /// <summary>
     /// Game State before the wave starts.
     /// </summary>
-    public class GameState_BeforeWave : GameState<GameStateData_BeforeWave>
+    public class GameState_MainMenu : GameState<GameStateData_MainMenu>
     {
-        public GameState_BeforeWave(GameStateData_BeforeWave data) : base(data)
+        public GameState_MainMenu(GameStateData_MainMenu data) : base(data)
         {
         }
 
-        public override GameStateEnum StateEnum => GameStateEnum.BeforeWave;
+        public override GameStateEnum StateEnum => GameStateEnum.MainMenu;
 
         public override bool CanBeEntered()
         {
@@ -17,6 +19,10 @@ namespace TowerDefender.Gameflow
         }
 
         public override void StartState()
+        {
+        }
+
+        public override void UpdateState()
         {
         }
 

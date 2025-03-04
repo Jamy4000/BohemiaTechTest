@@ -1,6 +1,6 @@
 namespace TowerDefender
 {
-    public sealed class WaveStartedEvent 
+    public readonly struct WaveStartedEvent 
     {
         public readonly Wave Wave;
 

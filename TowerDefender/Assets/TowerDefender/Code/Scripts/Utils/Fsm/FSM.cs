@@ -24,9 +24,11 @@ namespace Utils
             StartNewState(defaultState);
         }
 
-        /// <summary>
-        /// THIS METHOD SHOULD BE CALLED AT THE END OF THE FRAME
-        /// </summary>
+        public void ManualUpdate()
+        {
+            ActiveState.UpdateState();
+        }
+
         public void ManualLateUpdate()
         {
             if (_pendingTransitions.Count == 0)
@@ -107,6 +109,7 @@ namespace Utils
             ActiveState.IsActiveState = true;
             newState.StartState();
             newState.RequestToExitState += ExitCurrentState;
+            newState.RequestEnterState += AddPendingState;
 
             _currentStatePotentialTransitions.AddRange(newState.GetTransitionsStates());
             // some states may be set as potential transitions, but may not be registered in the FSM yet.
