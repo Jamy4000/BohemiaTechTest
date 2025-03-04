@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace TowerDefender.Player
@@ -7,6 +8,7 @@ namespace TowerDefender.Player
     {
         [field: SerializeField] public int StartingGold { get; private set; } = 200;
         public int CurrentGold { get; private set; }
+        public Action<int> OnMoneyChanged;
 
         private void Awake()
         {
@@ -21,6 +23,7 @@ namespace TowerDefender.Player
         public void Earn(int goldAmount)
         {
             CurrentGold += goldAmount;
+            OnMoneyChanged?.Invoke(CurrentGold);
         }
 
         public bool CanAfford(int goldAmount)
@@ -31,11 +34,13 @@ namespace TowerDefender.Player
         public void Spend(int goldAmount)
         {
             CurrentGold -= goldAmount;
+            OnMoneyChanged?.Invoke(CurrentGold);
         }
 
         private void Initialize()
         {
             CurrentGold = StartingGold;
+            OnMoneyChanged?.Invoke(CurrentGold);
         }
     }
 

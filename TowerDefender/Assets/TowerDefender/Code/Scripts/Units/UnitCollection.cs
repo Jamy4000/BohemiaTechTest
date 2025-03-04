@@ -15,7 +15,7 @@ namespace TowerDefender.Units
 
         public System.Action OnAllUnitDestroyed;
 
-        public virtual void Initialize()  { }
+        public virtual void Initialize() { }
 
         public void AddUnit(UnitBaseController unit)
         {
