@@ -1,4 +1,5 @@
-using Utils;
+using System;
+using TowerDefender.Units;
 
 namespace TowerDefender.Gameflow
 {
@@ -9,6 +10,7 @@ namespace TowerDefender.Gameflow
     {
         public GameState_GameOver(GameStateData_GameOver data) : base(data)
         {
+            PlayerCastleController.Instance.OnDeath += OnCastleDestroyed;
         }
 
         public override GameStateEnum StateEnum => GameStateEnum.GameOver;
@@ -28,6 +30,12 @@ namespace TowerDefender.Gameflow
 
         public override void EndState()
         {
+        }
+
+        private void OnCastleDestroyed()
+        {
+            RequestEnterState?.Invoke(GameStateEnum.GameOver);
+            PlayerCastleController.Instance.OnDeath -= OnCastleDestroyed;
         }
     }
 }

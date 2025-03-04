@@ -14,16 +14,20 @@ namespace TowerDefender.Units
             {
                 _attackTimer += UnityEngine.Time.deltaTime;
             }
-            else if (Owner.GetCurrentTarget().CalculateSqDistance(Owner.Position) < Model.AttackRangeSq)
+            else if (Owner.CurrentTarget.CalculateSqDistance(Owner.Position) < Model.AttackRangeSq)
             {
                 Attack();
             }
         }
 
+        public override void Dispose()
+        {
+        }
+
         private void Attack()
         {
             _attackTimer = 0f;
-            Owner.GetCurrentTarget().TakeDamage(Model.AttackDamage);
+            Owner.CurrentTarget.TakeDamage(Model.AttackDamage);
         }
 
         public override void ResetSystem()

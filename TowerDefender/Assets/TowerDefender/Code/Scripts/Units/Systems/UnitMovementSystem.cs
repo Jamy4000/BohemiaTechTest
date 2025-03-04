@@ -1,27 +1,45 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace TowerDefender.Units
 {
     public class UnitMovementSystem : BaseUnitSystem<UnitMovementModule, UnitBaseController>
     {
+        private readonly NavMeshAgent _agent;
+
         public UnitMovementSystem(UnitBaseController owner, UnitMovementModule model) : base(owner, model)
         {
+            _agent = Owner.View.GetComponent<NavMeshAgent>();
+            Owner.OnTargetChanged += OnTargetChanged;
         }
 
         public override void UpdateSystem() 
         {
-            Move(Owner.GetCurrentTarget().Position);
         }
 
         public override void ResetSystem()
         {
         }
 
-        protected virtual void Move(Vector3 target)
+        public override void Dispose()
         {
-            Vector3 direction = Vector3.Normalize(target - Owner.Position);
-            target -= direction * Model.DistanceFromEnemy;
-            Owner.SetPosition(Vector3.MoveTowards(Owner.Position, target, Model.MoveSpeed * Time.deltaTime));
+            Owner.OnTargetChanged -= OnTargetChanged;
         }
+
+        private void OnTargetChanged(Utils.ITarget target)
+        {
+            if (target == null)
+            {
+                _agent.isStopped = true;
+                return;
+            }
+
+            Vector3 targetPosition = target.Position;
+            Vector3 direction = Vector3.Normalize(targetPosition - Owner.Position);
+            targetPosition -= direction * Model.DistanceFromEnemy;
+            _agent.destination = targetPosition;
+            _agent.isStopped = false;
+        }
+
     }
 }

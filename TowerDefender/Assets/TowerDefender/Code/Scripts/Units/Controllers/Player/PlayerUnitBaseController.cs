@@ -1,5 +1,3 @@
-using Utils;
-
 namespace TowerDefender.Units
 {
     public abstract class PlayerUnitBaseController : UnitBaseController
@@ -13,18 +11,13 @@ namespace TowerDefender.Units
             // We need to make sure we have a target for the systems to run
             if (CurrentTarget == null)
             {
-                if (TryFindNewTarget(out CurrentTarget))
-                    CurrentTarget.OnDeath += OnCurrentTargetDied;
+                if (Model.EnemyTargetsCollection.FindClosestTarget(Position, Model.TargetSearchDistance, out Utils.ITarget newTarget))
+                    UpdateCurrentTarget(newTarget);
                 else
                     return;
             }
 
             base.ManualUpdate();
-        }
-
-        private bool TryFindNewTarget(out ITarget newTarget)
-        {
-            return Model.EnemyTargetsCollection.FindClosestTarget(Position, Model.TargetSearchDistance, out newTarget);
         }
     }
 }

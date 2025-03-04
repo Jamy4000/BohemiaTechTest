@@ -5,14 +5,15 @@ namespace TowerDefender.Units
 {
     public abstract class UnitBaseController : Utils.IGenericPoolable, Utils.ITarget
     {
-        protected Utils.ITarget CurrentTarget;
-        public Utils.ITarget GetCurrentTarget() => CurrentTarget;
+        private Utils.ITarget _currentTarget;
+        public Utils.ITarget CurrentTarget => _currentTarget;
 
+        public Action<Utils.ITarget> OnTargetChanged { get; set; }
         public Action<int> OnHit { get; set; }
         public Action OnDeath { get; set; }
 
-        protected readonly UnitBaseModel Model;
-        protected readonly UnitBaseView View;
+        public readonly UnitBaseModel Model;
+        public readonly UnitBaseView View;
         
         private readonly BaseUnitSystem[] _systems;
 
@@ -42,6 +43,10 @@ namespace TowerDefender.Units
         public virtual void ManualDestroy()
         {
             Model.FriendlyTargetsCollection.RemoveUnit(this);
+            foreach (var system in _systems)
+            {
+                system.Dispose();
+            }
         }
 
         public void SetPosition(Vector3 newPosition)
@@ -49,12 +54,25 @@ namespace TowerDefender.Units
             View.Transform.position = newPosition;
         }
 
+        protected void UpdateCurrentTarget(Utils.ITarget newTarget)
+        {
+            if (_currentTarget != null)
+                _currentTarget.OnDeath -= OnCurrentTargetDied;
+
+            _currentTarget = newTarget;
+
+            if (newTarget != null)
+                newTarget.OnDeath += OnCurrentTargetDied;
+
+            OnTargetChanged?.Invoke(newTarget);
+        }
+
         /// <summary>
         /// Called when the current target for this unit has died
         /// </summary>
         protected void OnCurrentTargetDied()
         {
-            CurrentTarget = null;
+            UpdateCurrentTarget(null);
         }
 
         /// <summary>

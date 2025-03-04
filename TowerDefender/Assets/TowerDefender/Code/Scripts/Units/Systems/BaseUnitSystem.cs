@@ -1,9 +1,11 @@
 namespace TowerDefender.Units
 {
-    public abstract class BaseUnitSystem
+    public abstract class BaseUnitSystem : System.IDisposable
     {
         public abstract void UpdateSystem();
         public abstract void ResetSystem();
+
+        public abstract void Dispose();
     }
 
     public abstract class BaseUnitSystem<TModel, TOwner> : BaseUnitSystem

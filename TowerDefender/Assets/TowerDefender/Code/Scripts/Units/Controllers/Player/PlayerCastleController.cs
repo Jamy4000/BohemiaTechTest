@@ -4,33 +4,35 @@ namespace TowerDefender.Units
 {
     public class PlayerCastleController : PlayerUnitBaseController
     {
-        public static PlayerCastleController PlayerCastle;
+        public static PlayerCastleController Instance;
 
         private Vector3 _gatePosition;
         public override Vector3 Position => _gatePosition;
 
         public PlayerCastleController(PlayerCastleModel model) : base(model)
         {
-            if (PlayerCastle != null)
+            if (Instance != null)
             {
                 throw new System.Exception("There can only be one player castle in the scene.");
             }
 
-            PlayerCastle = this;
+            Instance = this;
             // Adding the castle to the friendly targets collection from the start since it should be already placed in the scene
             model.FriendlyTargetsCollection.AddUnit(this);
-
+            
+            View.Transform.position = model.CastleSpawnPosition;
             _gatePosition = (View as PlayerCastleView).GateTransform.position;
         }
 
         ~PlayerCastleController()
         {
-            PlayerCastle = null;
+            Instance = null;
         }
 
         protected override void OnUnitDied()
         {
             // FIREWORKS!
+            // Overriding since we're not sending that one to the pool
         }
     }
 }

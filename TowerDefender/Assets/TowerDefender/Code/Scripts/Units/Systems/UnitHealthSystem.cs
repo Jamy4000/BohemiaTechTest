@@ -22,6 +22,10 @@ namespace TowerDefender.Units
             CurrentHealth = Model.MaxHealth;
         }
 
+        public override void Dispose()
+        {
+        }
+
         private void DamageUnit(int damage)
         {
             CurrentHealth -= damage;
