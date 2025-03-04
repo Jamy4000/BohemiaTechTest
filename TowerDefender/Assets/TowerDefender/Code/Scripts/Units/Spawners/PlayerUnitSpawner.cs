@@ -1,4 +1,3 @@
-using System.Data;
 using TowerDefender.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -61,6 +60,11 @@ namespace TowerDefender.Units
                 _placeUnitAction.action.performed += OnPlaceUnit;
             else if (evt.OldState == Gameflow.GameStateEnum.Preparation)
                 _placeUnitAction.action.performed -= OnPlaceUnit;
+        }
+
+        public void ChangeCurrentUnit(UnitType playerUnitType)
+        {
+            _currentlySelectedUnit = UnitPools[playerUnitType].UnitModel;
         }
     }
 }

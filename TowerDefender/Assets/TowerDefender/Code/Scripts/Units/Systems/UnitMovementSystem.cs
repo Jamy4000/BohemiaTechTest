@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,8 +19,6 @@ namespace TowerDefender.Units
 
         public override void UpdateSystem() 
         {
-            if (this.Owner is EnemyGruntController && _agent.velocity == Vector3.zero)
-                Debug.Log("Why");
         }
 
         public override void OnDisable()
