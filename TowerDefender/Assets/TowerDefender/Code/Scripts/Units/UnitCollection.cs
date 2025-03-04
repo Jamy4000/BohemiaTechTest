@@ -5,7 +5,7 @@ using Utils;
 namespace TowerDefender.Units
 {
     [CreateAssetMenu(menuName = "TowerDefender/Units/UnitCollection")]
-    public sealed class UnitCollection : ScriptableObject
+    public class UnitCollection : ScriptableObject
     {
         private readonly List<UnitBaseController> _units = new List<UnitBaseController>(256);
         private readonly List<UnitBaseController> _unitsToRemove = new List<UnitBaseController>(256);
@@ -14,6 +14,8 @@ namespace TowerDefender.Units
         public UnitBaseController GetUnit(int unitIndex) => _units[unitIndex];
 
         public System.Action OnAllUnitDestroyed;
+
+        public virtual void Initialize()  { }
 
         public void AddUnit(UnitBaseController unit)
         {

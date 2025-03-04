@@ -3,6 +3,7 @@ using Utils;
 
 namespace TowerDefender.Units
 {
+    [DefaultExecutionOrder(-100)] // Making sure this runs before anything else to initialize the UnitCollection
     public sealed class UnitsUpdater : MonoBehaviour, ISubscriber<GameStateChangedEvent>
     {
         [SerializeField]
@@ -11,6 +12,7 @@ namespace TowerDefender.Units
         private void Awake()
         {
             MessagingSystem<GameStateChangedEvent>.Subscribe(this);
+            _unitCollection.Initialize();
         }
 
         private void Update()

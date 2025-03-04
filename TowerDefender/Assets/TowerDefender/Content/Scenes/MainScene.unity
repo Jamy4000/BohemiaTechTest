@@ -203,7 +203,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.55
+  m_fontSize: 13.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1084,11 +1084,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.15
+  m_fontSize: 47.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 6
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -1714,6 +1714,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2057278453}
+  - {fileID: 1311382157}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1840,6 +1841,7 @@ GameObject:
   - component: {fileID: 1154950469}
   - component: {fileID: 1154950470}
   - component: {fileID: 1154950471}
+  - component: {fileID: 1154950472}
   m_Layer: 0
   m_Name: EnemyUnitsManager
   m_TagString: Untagged
@@ -1856,7 +1858,7 @@ Transform:
   m_GameObject: {fileID: 1154950468}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.86, y: 0, z: -25.18}
+  m_LocalPosition: {x: -14.44, y: 0.43, z: -26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1900,6 +1902,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitCollection: {fileID: 11400000, guid: 153285f9a66edf548b051766cb493d51, type: 2}
+--- !u!65 &1154950472
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154950468}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7, y: 1, z: 5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1215373098
 GameObject:
   m_ObjectHideFlags: 0
@@ -2052,6 +2075,41 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280629179}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1311382156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1311382157}
+  m_Layer: 5
+  m_Name: PlayerInventoryHUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1311382157
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311382156}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 881230362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1516990452
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,7 +2554,7 @@ MonoBehaviour:
     InitialSize: 10
     MaxSize: 20
     CollectionChecks: 0
-  _castleModel: {fileID: 11400000, guid: 744fc444f199d2340813559b5ae9229b, type: 2}
+  _inventory: {fileID: 11400000, guid: 68fd913c8e274b9468efbe33d00b9334, type: 2}
   _openFactoryMenuAction: {fileID: 0}
   _mousePositionAction: {fileID: 4844084772349869595, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   _placeUnitAction: {fileID: 8763712139567343423, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -2512,7 +2570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bd93c30468dd0d44b03ff8afa20b333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitCollection: {fileID: 11400000, guid: bfa8edf9b55655c47a4960cff3985669, type: 2}
+  _unitCollection: {fileID: 11400000, guid: 78a81825090edb14f8262927937e82dc, type: 2}
 --- !u!1 &1809357187
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,7 +3059,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.85
+  m_fontSize: 26.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3194,11 +3252,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 23.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 6
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1

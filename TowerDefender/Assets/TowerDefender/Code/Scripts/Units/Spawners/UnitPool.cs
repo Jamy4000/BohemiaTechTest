@@ -1,18 +1,19 @@
 namespace TowerDefender.Units
 {
-    public sealed class UnitPool : Utils.GenericPoolHelper<UnitBaseController>
+    public sealed class UnitPool<TUnitModel> : Utils.GenericPoolHelper<UnitBaseController>
+        where TUnitModel : UnitBaseModel
     {
-        private readonly UnitBaseModel _unitModel;
+        public readonly TUnitModel UnitModel;
 
-        public UnitPool(UnitBaseModel unitModel, int initialSize, int maxSize, bool collectionChecks = false) : 
+        public UnitPool(TUnitModel unitModel, int initialSize, int maxSize, bool collectionChecks = false) : 
             base(initialSize, maxSize, collectionChecks)
         {
-            _unitModel = unitModel;
+            UnitModel = unitModel;
         }
 
         protected override UnitBaseController CreatePooledItem()
         {
-            return _unitModel.CreateController();
+            return UnitModel.CreateController();
         }
     }
 }

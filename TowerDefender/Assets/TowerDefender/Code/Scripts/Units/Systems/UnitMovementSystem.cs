@@ -10,6 +10,7 @@ namespace TowerDefender.Units
         public UnitMovementSystem(UnitBaseController owner, UnitMovementModule model) : base(owner, model)
         {
             _agent = Owner.View.GetComponent<NavMeshAgent>();
+            
             Owner.OnTargetChanged += OnTargetChanged;
         }
 
@@ -30,7 +31,9 @@ namespace TowerDefender.Units
         {
             if (target == null)
             {
-                _agent.isStopped = true;
+                // Quick fix for an error showing up in enditor that I don't think I'll be able to fix in time
+                if (_agent.isOnNavMesh)
+                    _agent.isStopped = true;
                 return;
             }
 
@@ -38,7 +41,9 @@ namespace TowerDefender.Units
             Vector3 direction = Vector3.Normalize(targetPosition - Owner.Position);
             targetPosition -= direction * Model.DistanceFromEnemy;
             _agent.destination = targetPosition;
-            _agent.isStopped = false;
+            // Quick fix for an error showing up in enditor that I don't think I'll be able to fix in time
+            if (_agent.isOnNavMesh)
+                _agent.isStopped = false;
         }
 
     }

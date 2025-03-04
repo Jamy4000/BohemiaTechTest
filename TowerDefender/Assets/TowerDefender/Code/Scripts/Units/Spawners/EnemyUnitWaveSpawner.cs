@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.AI;
 using Utils;
 
 namespace TowerDefender.Units
 {
-    public sealed class EnemyUnitWaveSpawner : BaseUnitSpawner, ISubscriber<WaveStartedEvent>
+    [RequireComponent(typeof(BoxCollider))]
+    public sealed class EnemyUnitWaveSpawner : BaseUnitSpawner<UnitBaseModel>, ISubscriber<WaveStartedEvent>
     {
         protected override void Awake()
         {
@@ -18,14 +20,32 @@ namespace TowerDefender.Units
 
         public void OnEvent(WaveStartedEvent evt)
         {
+            Bounds bounds = GetComponent<BoxCollider>().bounds;
+
             foreach (Wave.WaveUnitData unitData in evt.Wave.UnitsToSpawn)
             {
                 for (int i = 0; i < unitData.UnitCount; i++)
                 {
-                    // TODO Change start position to be randomized
-                    SpawnUnit(unitData.UnitType, transform.position);
+                    Vector3 position = RandomPointInBounds(bounds);
+                    if (NavMesh.SamplePosition(position, out NavMeshHit myNavHit, 100, -1))
+                    {
+                        SpawnUnit(unitData.UnitType, myNavHit.position);
+                    }
+                    else
+                    {
+                        throw new System.Exception("Couldn't find a valid point on NavMesh to spawn a unit.");
+                    }
                 }
             }
+        }
+
+        private static Vector3 RandomPointInBounds(Bounds bounds)
+        {
+            return new Vector3(
+                Random.Range(bounds.min.x, bounds.max.x),
+                Random.Range(bounds.min.y, bounds.max.y),
+                Random.Range(bounds.min.z, bounds.max.z)
+            );
         }
     }
 }

@@ -5,6 +5,7 @@ namespace TowerDefender.Units
 {
     public abstract class UnitBaseController : Utils.IGenericPoolable, Utils.ITarget
     {
+
         private Utils.ITarget _currentTarget;
         public Utils.ITarget CurrentTarget => _currentTarget;
 
