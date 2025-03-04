@@ -42,6 +42,8 @@ namespace TowerDefender.UI
                     throw new System.Exception($"UnitType {playerUnit.UnitType} not found in dictionary");
 
                 unitButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = unitTypeString;
+
+                // TODO This should be handled through the messaging system instead
                 unitButton.GetComponent<Button>().onClick.AddListener(() => _playerUnitSpawner.ChangeCurrentUnit(playerUnit.UnitType));
             }
 

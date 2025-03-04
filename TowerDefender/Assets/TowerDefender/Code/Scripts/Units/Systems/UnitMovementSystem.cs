@@ -15,6 +15,7 @@ namespace TowerDefender.Units
         public override void OnEnable()
         {
             Owner.OnTargetChanged += OnTargetChanged;
+            OnTargetChanged(Owner.CurrentTarget);
         }
 
         public override void UpdateSystem() 

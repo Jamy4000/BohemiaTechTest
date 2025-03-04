@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerDefender.Units
@@ -16,7 +17,7 @@ namespace TowerDefender.Units
         public readonly UnitBaseModel Model;
         public readonly UnitBaseView View;
         
-        private readonly BaseUnitSystem[] _systems;
+        private readonly Dictionary<UnitModuleType, BaseUnitSystem> _systems;
 
         public UnitBaseController(UnitBaseModel model)
         {
@@ -24,10 +25,11 @@ namespace TowerDefender.Units
             View = GameObject.Instantiate(model.UnitViewPrefab).GetComponent<UnitBaseView>();
 
             int modulesLength = model.Modules.Length;
-            _systems = new BaseUnitSystem[modulesLength];
+            _systems = new Dictionary<UnitModuleType, BaseUnitSystem>(modulesLength);
             for (int i = 0; i < modulesLength; i++)
             {
-                _systems[i] = model.Modules[i].CreateSystem(this);
+                var module = model.Modules[i];
+                _systems.Add(module.ModuleType, module.CreateSystem(this));
             }
 
             OnDeath += OnUnitDied;
@@ -35,24 +37,29 @@ namespace TowerDefender.Units
 
         public virtual void ManualUpdate()
         {
-            foreach (var system in _systems)
+            foreach (var kvp in _systems)
             {
-                system.UpdateSystem();
+                kvp.Value.UpdateSystem();
             }
         }
 
         public virtual void ManualDestroy()
         {
             Model.FriendlyTargetsCollection.RemoveUnit(this);
-            foreach (var system in _systems)
+            foreach (var kvp in _systems)
             {
-                system.Dispose();
+                kvp.Value.Dispose();
             }
         }
 
         public void SetPosition(Vector3 newPosition)
         {
             View.Transform.position = newPosition;
+        }
+
+        public BaseUnitSystem GetSystem(UnitModuleType moduleType)
+        {
+            return _systems[moduleType];
         }
 
         protected void UpdateCurrentTarget(Utils.ITarget newTarget)
@@ -96,6 +103,12 @@ namespace TowerDefender.Units
         public void TakeDamage(int damage)
         {
             OnHit?.Invoke(damage);
+            if (_systems.TryGetValue(UnitModuleType.Health, out BaseUnitSystem unitSysten))
+            {
+                // TODO I hate that cast
+                var healthSystem = unitSysten as UnitHealthSystem;
+                View.OnHealthChanged(healthSystem.CurrentHealth, healthSystem.MaxHealth);
+            }
         }
         #endregion ITarget
 
@@ -103,28 +116,29 @@ namespace TowerDefender.Units
         #region IGenericPoolable
         public Action<Utils.IGenericPoolable> OnShouldReturnToPool { get; set; }
 
-        public void Enable()
+        public virtual void Enable()
         {
-            foreach (var system in _systems)
+            View.gameObject.SetActive(true);
+
+            foreach (var kvp in _systems)
             {
-                system.OnEnable();
+                kvp.Value.OnEnable();
             }
 
             Model.FriendlyTargetsCollection.AddUnit(this);
-
-            View.gameObject.SetActive(true);
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
-            foreach (var system in _systems)
+            foreach (var kvp in _systems)
             {
-                system.OnDisable();
+                kvp.Value.OnDisable();
             }
 
             Model.FriendlyTargetsCollection.RemoveUnit(this);
 
-            View.gameObject.SetActive(false);
+            if (View != null)
+                View.gameObject.SetActive(false);
         }
 
         public void Destroy()

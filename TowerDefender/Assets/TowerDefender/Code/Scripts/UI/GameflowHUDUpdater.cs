@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TowerDefender.Gameflow;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace TowerDefender.UI
@@ -17,6 +18,9 @@ namespace TowerDefender.UI
         [SerializeField] private TMPro.TextMeshProUGUI _timerText = null;
         [SerializeField] private TMPro.TextMeshProUGUI _holdSpaceBarHintText = null;
 
+        [SerializeField] private Button _restartGameButton = null;
+        [SerializeField] private Button _quitGameButton = null;
+
         // TODO this could be data that we inject through SO or the monobehaviour directly for designer to tweak
         private readonly Dictionary<GameStateEnum, string> _gameStateToText = new Dictionary<GameStateEnum, string>
         {
@@ -32,6 +36,12 @@ namespace TowerDefender.UI
         private void Awake()
         {
             MessagingSystem<GameStateChangedEvent>.Subscribe(this);
+
+            _restartGameButton.gameObject.SetActive(false);
+            _restartGameButton.onClick.AddListener(() => ReloadScene());
+
+            _quitGameButton.gameObject.SetActive(false);
+            _quitGameButton.onClick.AddListener(() => Application.Quit());
         }
 
         private void Update()
@@ -48,20 +58,36 @@ namespace TowerDefender.UI
         {
             _currentPhaseText.text = _gameStateToText[evt.NewState];
 
-            if (evt.NewState == GameStateEnum.Preparation)
+            switch (evt.NewState)
             {
-                this.enabled = true;
-                _timerText.gameObject.SetActive(true);
-                _holdSpaceBarHintText.gameObject.SetActive(true);
-                _prepTimeRemainingText.gameObject.SetActive(true);
+                case GameStateEnum.Preparation:
+                    TogglePrepUI(true);
+                    break;
+
+                case GameStateEnum.PlayerWon:
+                case GameStateEnum.GameOver:
+                    TogglePrepUI(false);
+                    _restartGameButton.gameObject.SetActive(true);
+                    _quitGameButton.gameObject.SetActive(true);
+                    break;
+
+                default:
+                    TogglePrepUI(false);
+                    break;
             }
-            else
-            {
-                this.enabled = false;
-                _timerText.gameObject.SetActive(false);
-                _holdSpaceBarHintText.gameObject.SetActive(false);
-                _prepTimeRemainingText.gameObject.SetActive(false);
-            }
+        }
+
+        private void TogglePrepUI(bool isActive)
+        {
+            this.enabled = isActive;
+            _timerText.gameObject.SetActive(isActive);
+            _holdSpaceBarHintText.gameObject.SetActive(isActive);
+            _prepTimeRemainingText.gameObject.SetActive(isActive);
+        }
+
+        private void ReloadScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

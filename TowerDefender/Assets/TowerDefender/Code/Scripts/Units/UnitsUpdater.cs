@@ -22,7 +22,7 @@ namespace TowerDefender.Units
 
         private void OnDestroy()
         {
-            _unitCollection.DestroyAllUnits();
+            _unitCollection.Dispose();
             MessagingSystem<GameStateChangedEvent>.Unsubscribe(this);
         }
 

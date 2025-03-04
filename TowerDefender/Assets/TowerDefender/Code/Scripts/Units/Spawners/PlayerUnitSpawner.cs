@@ -9,7 +9,6 @@ namespace TowerDefender.Units
     {
         [SerializeField] private PlayerInventory _inventory;
 
-        [SerializeField] private InputActionReference _openFactoryMenuAction;
         [SerializeField] private InputActionReference _mousePositionAction;
         [SerializeField] private InputActionReference _placeUnitAction;
 

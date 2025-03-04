@@ -5,6 +5,8 @@ namespace TowerDefender.Units
     [CreateAssetMenu(menuName = "TowerDefender/Units/Modules/Attack")]
     public sealed class UnitAttackModule : BaseUnitModule
     {
+        public override UnitModuleType ModuleType => UnitModuleType.Attack;
+
         [field: SerializeField]
         public float AttackRange { get; private set; } = 1f;
         public float AttackRangeSq { get; private set; } = 1f;

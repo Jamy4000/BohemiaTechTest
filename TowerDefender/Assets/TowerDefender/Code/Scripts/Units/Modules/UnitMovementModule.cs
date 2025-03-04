@@ -5,6 +5,8 @@ namespace TowerDefender.Units
     [CreateAssetMenu(menuName = "TowerDefender/Units/Modules/Movement")]
     public sealed class UnitMovementModule : BaseUnitModule
     {
+        public override UnitModuleType ModuleType => UnitModuleType.Movement;
+
         [field: SerializeField]
         public float MoveSpeed { get; private set; } = 1f;
 

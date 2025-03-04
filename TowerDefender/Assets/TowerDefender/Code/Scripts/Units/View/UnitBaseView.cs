@@ -11,5 +11,7 @@ namespace TowerDefender.Units
         {
             Transform = transform;
         }
+
+        public abstract void OnHealthChanged(float newHealth, float maxHealth);
     }
 }

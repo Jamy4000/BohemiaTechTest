@@ -1,6 +1,6 @@
 namespace TowerDefender.Units
 {
-    public sealed class PlayerFlamethrowerTowerView : UnitBaseView
+    public sealed class PlayerFlamethrowerTowerView : PlayerUnitBaseView
     {
     }
 }

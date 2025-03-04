@@ -3,7 +3,10 @@ namespace TowerDefender.Units
     public class UnitHealthSystem : BaseUnitSystem<UnitHealthModule, UnitBaseController>
     {
         public int CurrentHealth { get; private set; }
+        public int MaxHealth => Model.MaxHealth;
         public bool IsDead => CurrentHealth <= 0f;
+
+        public System.Action<float> OnHealthChanged;
 
         public UnitHealthSystem(UnitBaseController owner, UnitHealthModule model) : base(owner, model)
         {
@@ -30,6 +33,8 @@ namespace TowerDefender.Units
         private void DamageUnit(int damage)
         {
             CurrentHealth -= damage;
+            OnHealthChanged?.Invoke(CurrentHealth);
+
             if (CurrentHealth <= 0)
             {
                 Owner.OnDeath?.Invoke();

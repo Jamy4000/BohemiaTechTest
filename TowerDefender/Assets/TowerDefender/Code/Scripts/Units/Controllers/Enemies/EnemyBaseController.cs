@@ -40,5 +40,18 @@ namespace TowerDefender.Units
                 }
             }
         }
+
+        public override void Enable()
+        {
+            UpdateCurrentTarget(PlayerCastleController.Instance);
+
+            base.Enable();
+        }
+
+        public override void Disable()
+        {
+            UpdateCurrentTarget(null);
+            base.Disable();
+        }
     }
 }

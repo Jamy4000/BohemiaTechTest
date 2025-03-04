@@ -5,7 +5,7 @@ using Utils;
 namespace TowerDefender.Units
 {
     [CreateAssetMenu(menuName = "TowerDefender/Units/UnitCollection")]
-    public class UnitCollection : ScriptableObject
+    public class UnitCollection : ScriptableObject, System.IDisposable
     {
         private readonly List<UnitBaseController> _units = new List<UnitBaseController>(256);
         private readonly List<UnitBaseController> _unitsToRemove = new List<UnitBaseController>(256);
@@ -16,6 +16,11 @@ namespace TowerDefender.Units
         public System.Action OnAllUnitDestroyed;
 
         public virtual void Initialize() { }
+
+        public virtual void Dispose() 
+        {
+            DestroyAllUnits();
+        }
 
         public void AddUnit(UnitBaseController unit)
         {
@@ -38,15 +43,18 @@ namespace TowerDefender.Units
                 _units[unitIndex].ManualUpdate();
             }
 
-            foreach (var unit in _unitsToRemove)
+            if (_unitsToRemove.Count > 0)
             {
-                _units.Remove(unit);
-            }
-            _unitsToRemove.Clear();
+                foreach (var unit in _unitsToRemove)
+                {
+                    _units.Remove(unit);
+                }
+                _unitsToRemove.Clear();
 
-            if (_units.Count == 0)
-            {
-                OnAllUnitDestroyed?.Invoke();
+                if (_units.Count == 0)
+                {
+                    OnAllUnitDestroyed?.Invoke();
+                }
             }
 
             // TODO Rebuild KDTree
@@ -61,6 +69,10 @@ namespace TowerDefender.Units
 
             foreach (var unit in _units)
             {
+                // Quick fix as the current system was targeting dead units. I know why, just don't have the time to fix it
+                if (_unitsToRemove.Contains(unit))
+                    continue;
+
                 float sqDistance = unit.CalculateSqDistance(position);
                 if (sqDistance < closestSqDistance)
                 {
@@ -72,7 +84,7 @@ namespace TowerDefender.Units
             return currentTarget != null;
         }
 
-        public void DestroyAllUnits()
+        private void DestroyAllUnits()
         {
             for (int unitIndex = 0; unitIndex < _units.Count; unitIndex++)
             {

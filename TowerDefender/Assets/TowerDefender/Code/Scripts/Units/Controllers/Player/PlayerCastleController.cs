@@ -17,15 +17,14 @@ namespace TowerDefender.Units
             }
 
             Instance = this;
-            // Adding the castle to the friendly targets collection from the start since it should be already placed in the scene
-            model.FriendlyTargetsCollection.AddUnit(this);
             
             View.Transform.position = model.CastleSpawnPosition;
             _gatePosition = (View as PlayerCastleView).GateTransform.position;
         }
 
-        ~PlayerCastleController()
+        public override void ManualDestroy()
         {
+            base.ManualDestroy();
             Instance = null;
         }
 

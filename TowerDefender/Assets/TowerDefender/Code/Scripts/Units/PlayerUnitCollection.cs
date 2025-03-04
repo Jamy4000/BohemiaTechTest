@@ -16,6 +16,7 @@ namespace TowerDefender.Units
             base.Initialize();
 
             _playerCastleController = _playerCastleModel.CreateController() as PlayerCastleController;
+            _playerCastleController.Enable();
         }
     }
 }
